@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { sign} from "jsonwebtoken";
-import { exit } from 'process';
  
 export async function POST(request: Request) {
     const body = await request.json();
@@ -32,9 +31,13 @@ export async function POST(request: Request) {
                     const token = sign(
                         {
                             id: validuser.rows[0].id,
-                            name: body.name
+                            name: body.name,
+                            password:hashPass
                         },
-                        jwtToken
+                        jwtToken,
+                        {
+                            expiresIn: "30d",
+                        }
                     );
                     return NextResponse.json({"status":"success", "msg":"Login success", "jwtToken":token}, { status: 200 });
                 }else
