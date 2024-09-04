@@ -8,7 +8,7 @@ import 'dotenv/config';
 export async function POST(request: Request) {
     const apiKey = request.headers.get('api-key');
     if (!apiKey || apiKey !== process.env.API_KEY_SECRET) {
-        return NextResponse.json({ message: process.env.API_KEY_SECRET },{status:401});
+        return NextResponse.json({ message: "Invalid api key" },{status:401});
     }
     const body = await request.json();
 
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         let hashPass = validuser.rows[0].password;
         const isValidUser = await bcrypt.compare(body.password, hashPass);
         if(isValidUser){
-            const jwtToken = process.env.JWT_TOKEN_SECRET || "";
+            const jwtToken = process.env.JWT_TOKEN_SECRET ?? "";
             const token = sign(
                 {
                     id: validuser.rows[0].id,
