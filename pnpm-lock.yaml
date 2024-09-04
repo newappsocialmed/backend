@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@types/jsonwebtoken':
-        specifier: ^9.0.6
-        version: 9.0.6
       '@vercel/postgres':
         specifier: ^0.9.0
         version: 0.9.0
@@ -39,6 +36,9 @@ importers:
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
+      '@types/jsonwebtoken':
+        specifier: ^9.0.6
+        version: 9.0.6
       '@types/node':
         specifier: ^20
         version: 20.16.3
