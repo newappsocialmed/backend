@@ -25,6 +25,6 @@ export async function POST(request: Request) {
     await sql`INSERT INTO users (name, password) VALUES (${body.name}, ${hashedPassword})`;
     return NextResponse.json({"status":"success", "msg":"signin success"}, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json({ "status":"failed", "error":error }, { status: 500 });
   }
 }

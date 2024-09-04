@@ -3,15 +3,10 @@ import { NextResponse } from 'next/server';
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { sign} from "jsonwebtoken";
-import 'dotenv/config';
+import { exit } from 'process';
  
 export async function POST(request: Request) {
-    const apiKey = request.headers.get('api-key');
-    if (!apiKey || apiKey !== process.env.API_KEY_SECRET) {
-        return NextResponse.json({ message: "Invalid api key" },{status:401});
-    }
     const body = await request.json();
-
     const schema = z.object({
         name: z.string().min(6),
         password: z.string().min(6)
@@ -32,20 +27,23 @@ export async function POST(request: Request) {
             let hashPass = validuser.rows[0].password;
             const isValidUser = await bcrypt.compare(body.password, hashPass);
             if(isValidUser){
-                const jwtToken = process.env.JWT_TOKEN_SECRET ?? "";
-                const token = sign(
-                    {
-                        id: validuser.rows[0].id,
-                        name: body.name
-                    },
-                    jwtToken
-                );
-                return NextResponse.json({"status":"success", "msg":"Login success", "jwtToken":token}, { status: 200 });
+                const jwtToken = process.env.JWT_KEY_SECRET ?? "";
+                if(jwtToken!=""){
+                    const token = sign(
+                        {
+                            id: validuser.rows[0].id,
+                            name: body.name
+                        },
+                        jwtToken
+                    );
+                    return NextResponse.json({"status":"success", "msg":"Login success", "jwtToken":token}, { status: 200 });
+                }else
+                    return NextResponse.json({"status":"failed", "msg":"JWT Key not found"}, { status: 500});
             }
             else
                 return NextResponse.json({"status":"failed", "msg":"Invalid User"}, { status: 404 });
         }
     } catch (error) {
-        return NextResponse.json({ error }, { status: 500 });
+        return NextResponse.json({ "status":"failed", "error":error }, { status: 500 });
     }
 }
