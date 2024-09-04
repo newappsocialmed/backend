@@ -22,6 +22,7 @@
 
 #.env
 .env
+.env.development.local
 
 # debug
 npm-debug.log*
