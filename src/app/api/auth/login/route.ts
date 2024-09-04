@@ -7,7 +7,7 @@ import { sign} from "jsonwebtoken";
 export async function POST(request: Request) {
     const apiKey = request.headers.get('api-key');
     if (!apiKey || apiKey !== process.env.API_KEY_SECRET) {
-        return NextResponse.json({ message: "Invalid Api Key" },{status:401});
+        return NextResponse.json({ message: process.env.API_KEY_SECRET },{status:401});
     }
     const body = await request.json();
 
