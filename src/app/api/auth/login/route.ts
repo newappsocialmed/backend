@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { sign} from "jsonwebtoken";
-import 'dotenv/config'
+import 'dotenv/config';
  
 export async function POST(request: Request) {
     const apiKey = request.headers.get('api-key');
