@@ -1,7 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 import bcrypt from "bcrypt";
-import { sign} from "jsonwebtoken";
  
 export async function POST(request: Request) {
     const body = await request.json();
