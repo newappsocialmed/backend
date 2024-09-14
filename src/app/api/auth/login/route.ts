@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     try {
         const validuser = await sql`SELECT password, id, value from flutter WHERE username = ${body.name}`;
         if(validuser.rows.length == 0)
-            return NextResponse.json({"status":"failed", "msg":"User Not Found"}, { status: 404 });
+            return NextResponse.json({"status":"failed", "msg":"User Not Found"}, { status: 200 });
         else{
             let hashPass = validuser.rows[0].password;
             const isValidUser = await bcrypt.compare(body.password, hashPass);
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
                 return NextResponse.json({"status":"success", "msg":"Login success", "value":validuser.rows[0].value, "id":validuser.rows[0].id}, { status: 200 });
             }
             else
-                return NextResponse.json({"status":"failed", "msg":"Invalid User"}, { status: 404 });
+                return NextResponse.json({"status":"failed", "msg":"Invalid User"}, { status: 200 });
         }
     } catch (error) {
         return NextResponse.json({ "status":"failed", "error":error }, { status: 500 });
