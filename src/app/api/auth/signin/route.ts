@@ -7,7 +7,7 @@ export async function POST(request: Request) {
 
   try {
     const check = await sql`SELECT username from flutter WHERE username = ${body.name}`;
-    if(check.rows.length > 0) return NextResponse.json({"status":"failed", "errMsg":"Username already exists"}, { status: 400 });
+    if(check.rows.length > 0) return NextResponse.json({"status":"failed", "errMsg":"Username already exists"}, { status: 404 });
     const hashedPassword = await bcrypt.hash(body.password, 10);
     await sql`INSERT INTO flutter (username, password, value) VALUES (${body.name}, ${hashedPassword}, 0)`;
     return NextResponse.json({"status":"success", "msg":"signin success"}, { status: 200 });
