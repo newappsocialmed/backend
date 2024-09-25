@@ -12,6 +12,7 @@ export async function POST(request: Request) {
             let hashPass = validuser.rows[0].password;
             const isValidUser = await bcrypt.compare(body.password, hashPass);
             if(isValidUser){
+                if(validuser.rows[0].isadmin == null || validuser.rows[0].isadmin === false) validuser.rows[0].isadmin = false;
                 return NextResponse.json({"status":"success", "msg":"Login success", "id":validuser.rows[0].id, "isAdmin":validuser.rows[0].isadmin}, { status: 200 });
             }
             else
